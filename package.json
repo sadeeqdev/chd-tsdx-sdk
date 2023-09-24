@@ -1,0 +1,25 @@
+{
+  "name": "chedda-sdk",
+  "version": "1.0.0",
+  "description": "chedda demo sdk",
+  "main": "main/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdx build",
+    "start": "tsdx watch",
+    "test": "tsdx test",
+    "prepublishOnly": "tsdx build"
+  },
+  "keywords": [],
+  "author": "sadeeqdev",
+  "license": "ISC",
+  "devDependencies": {
+    "tsdx": "^0.14.1"
+  },
+  "dependencies": {
+    "ethers": "^5.4.7"
+  }
+}
