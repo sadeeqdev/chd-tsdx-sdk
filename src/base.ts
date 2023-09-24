@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { CheddaVault } from "./cheddaVault";
+import { CheddaVault } from "./vault";
 
 export class Chedda {
   provider: ethers.providers.WebSocketProvider;
