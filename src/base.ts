@@ -14,7 +14,7 @@ export class Chedda {
     return new CheddaVault(this.provider, signer);
   }
 
-  token(signer?: Signer) {
+  token(signer: Signer) {
     return new TokenService(this.provider, signer);
   }
 

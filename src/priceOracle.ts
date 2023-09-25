@@ -1,17 +1,18 @@
 import { BigNumber, ethers, Contract } from "ethers";
 
 export class PriceOracle {
-  oracleContract: Contract;
+  oracleContract: Contract | undefined;
   provider: ethers.providers.WebSocketProvider;
 
   constructor(provider: ethers.providers.WebSocketProvider) {
     this.provider = provider;
+    this.oracleContract = undefined;
   }
 
   async getAssetPrice(
-    MultiAssetPriceOracle: { abi: ethers.ContractInterface },
-    priceFeedAddress: string,
-    address: string
+    address: string,
+    MultiAssetPriceOracle: { abi: any },
+    priceFeedAddress: string
   ): Promise<BigNumber> {
     const priceFeedAbi = MultiAssetPriceOracle.abi;
     this.oracleContract = new ethers.Contract(

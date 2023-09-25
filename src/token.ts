@@ -42,7 +42,7 @@ export class TokenService {
   }
 
   async ownedTokens(contract: Contract, account: string): Promise<string[]> {
-    return (await contract.ownedTokens(account)).map((t) => t.toString());
+    return (await contract.ownedTokens(account)).map((t: any) => t.toString());
   }
 
   async transfer(contract: Contract, to: string, amount: BigNumber) {
