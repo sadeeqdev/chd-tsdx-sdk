@@ -1,10 +1,10 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, Signer } from "ethers";
 
 export class CheddaVault {
   provider: any;
-  signer: string;
+  signer: Signer;
 
-  constructor(provider: any, signer: string) {
+  constructor(provider: any, signer?: Signer) {
     this.provider = provider;
     this.signer = signer;
   }

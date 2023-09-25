@@ -1,14 +1,24 @@
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
+import { PriceOracle } from "./priceOracle";
+import { TokenService } from "./token";
 import { CheddaVault } from "./vault";
 
 export class Chedda {
   provider: ethers.providers.WebSocketProvider;
 
-  constructor(appProvider: string) {
-    this.provider = new ethers.providers.WebSocketProvider(appProvider);
+  constructor(provider: string) {
+    this.provider = new ethers.providers.WebSocketProvider(provider);
   }
 
-  vault() {
-    return new CheddaVault(this.provider, "Hello world");
+  vault(signer?: Signer) {
+    return new CheddaVault(this.provider, signer);
+  }
+
+  token(signer?: Signer) {
+    return new TokenService(this.provider, signer);
+  }
+
+  priceOracle() {
+    return new PriceOracle(this.provider);
   }
 }
