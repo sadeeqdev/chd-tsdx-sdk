@@ -2,7 +2,7 @@
   "name": "chedda-sdk",
   "version": "1.0.0",
   "description": "chedda demo sdk",
-  "main": "main/index.js",
+  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
