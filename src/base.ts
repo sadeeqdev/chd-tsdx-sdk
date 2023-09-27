@@ -10,12 +10,12 @@ export class Chedda {
     this.provider = new ethers.providers.WebSocketProvider(provider);
   }
 
-  vault(signer?: Signer) {
-    return new CheddaVault(this.provider, signer);
+  vault(address: string, signer: Signer) {
+    return new CheddaVault(this.provider, address, signer);
   }
 
-  token(signer: Signer) {
-    return new TokenService(this.provider, signer);
+  token(address: string, signer: Signer) {
+    return new TokenService(this.provider, address, signer);
   }
 
   priceOracle() {

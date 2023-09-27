@@ -11,7 +11,7 @@ export class PriceOracle {
 
   async getAssetPrice(
     address: string,
-    MultiAssetPriceOracle: { abi: any },
+    MultiAssetPriceOracle: { abi: ethers.ContractInterface },
     priceFeedAddress: string
   ): Promise<BigNumber> {
     const priceFeedAbi = MultiAssetPriceOracle.abi;

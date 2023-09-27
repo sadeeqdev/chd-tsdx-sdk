@@ -1,16 +1,11 @@
 import { Chedda } from "../dist/index.js";
-import CheddaBaseTokenVault from "./CheddaBaseTokenVault.json" assert { type: "json" };
+import { contractAddress, address } from "./constants.js";
 import { environment } from "./enviroment.js";
+import { MockSigner } from "./mockSigner.js";
 
 const provider = environment.webSocketUrl;
+const signer = new MockSigner(address);
 const chedda = new Chedda(provider);
-const vault = chedda.vault();
+const vault = chedda.vault(contractAddress, signer);
 
-
-console.log(
-  vault.contractAt(
-    "0xB27595Bedd063935ca146EB46ee7CaE40F696f7E",
-    CheddaBaseTokenVault.abi
-
-  )
-);
+console.log(vault.contract);
