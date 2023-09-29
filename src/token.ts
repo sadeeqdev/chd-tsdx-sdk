@@ -3,7 +3,7 @@ import ERC20 from "./artifacts/ERC20.json";
 import MarketNFT from "./artifacts/MarketNFT.json";
 
 export class TokenService {
-  private contract!: Contract;
+  public contract!: Contract;
 
   constructor(
     private provider: ethers.providers.WebSocketProvider,

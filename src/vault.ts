@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers, Signer } from "ethers";
 import CheddaBaseTokenVault from "./artifacts/CheddaBaseTokenVault.json";
 
 export class CheddaVault {
-  private contract!: Contract;
+  public contract!: Contract;
 
   constructor(
     private provider: ethers.providers.WebSocketProvider,
