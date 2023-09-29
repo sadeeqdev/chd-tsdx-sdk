@@ -2,20 +2,20 @@ import { BigNumber, Contract, ethers, Signer } from "ethers";
 import CheddaBaseTokenVault from "./artifacts/CheddaBaseTokenVault.json";
 
 export class CheddaVault {
-  private provider: ethers.providers.WebSocketProvider;
-  private signer: Signer;
-  public contract: Contract | null;
+  private contract!: Contract;
 
-  constructor(provider: ethers.providers.WebSocketProvider, signer: Signer) {
-    this.provider = provider;
-    this.signer = signer;
-    this.contract = null;
+  constructor(
+    private provider: ethers.providers.WebSocketProvider,
+    private address: string,
+    private signer: Signer
+  ) {
+    this.initiateContract();
   }
 
   async depositAsset(amount: BigNumber, toAccount: string) {
     try {
       return await this.contract
-        ?.connect(this.signer)
+        .connect(this.signer)
         .deposit(amount, toAccount);
     } catch (error) {
       console.error("Error in depositAsset:", error);
@@ -26,7 +26,7 @@ export class CheddaVault {
   async redeem(amount: BigNumber, toAccount: string) {
     try {
       return await this.contract
-        ?.connect(this.signer)
+        .connect(this.signer)
         .redeem(amount, toAccount, toAccount);
     } catch (error) {
       console.error("Error in redeem:", error);
@@ -37,7 +37,7 @@ export class CheddaVault {
   async addCollateral(token: string, amount: BigNumber) {
     try {
       return await this.contract
-        ?.connect(this.signer)
+        .connect(this.signer)
         .addCollateral(token, amount);
     } catch (error) {
       console.error("Error in addCollateral:", error);
@@ -48,7 +48,7 @@ export class CheddaVault {
   async removeCollateral(token: string, amount: BigNumber) {
     try {
       return await this.contract
-        ?.connect(this.signer)
+        .connect(this.signer)
         .removeCollateral(token, amount);
     } catch (error) {
       console.error("Error in removeCollateral:", error);
@@ -58,7 +58,7 @@ export class CheddaVault {
 
   async accountCollateralTokenIds(account: string, token: string) {
     try {
-      return await this.contract?.accountCollateralTokenIds(account, token);
+      return await this.contract.accountCollateralTokenIds(account, token);
     } catch (error) {
       console.error("Error in accountCollateralTokenIds:", error);
       throw error;
@@ -67,7 +67,7 @@ export class CheddaVault {
 
   async borrow(amount: BigNumber) {
     try {
-      return await this.contract?.connect(this.signer).take(amount);
+      return await this.contract.connect(this.signer).take(amount);
     } catch (error) {
       console.error("Error in borrow:", error);
       throw error;
@@ -76,7 +76,7 @@ export class CheddaVault {
 
   async repay(amount: BigNumber) {
     try {
-      return await this.contract?.connect(this.signer).putAmount(amount);
+      return await this.contract.connect(this.signer).putAmount(amount);
     } catch (error) {
       console.error("Error in repay:", error);
       throw error;
@@ -85,7 +85,7 @@ export class CheddaVault {
 
   async collateral(account: string, token: string): Promise<any> {
     try {
-      return await this.contract?.accountCollateral(account, token);
+      return await this.contract.accountCollateral(account, token);
     } catch (error) {
       console.error("Error in collateral:", error);
       throw error;
@@ -94,7 +94,7 @@ export class CheddaVault {
 
   async totalAssets(): Promise<BigNumber> {
     try {
-      return await this.contract?.totalAssets();
+      return await this.contract.totalAssets();
     } catch (error) {
       console.error("Error in totalAssets:", error);
       throw error;
@@ -103,7 +103,7 @@ export class CheddaVault {
 
   async collateralAmounts() {
     try {
-      return await this.contract?.collateralAmounts();
+      return await this.contract.collateralAmounts();
     } catch (error) {
       console.error("Error in collateralAmounts:", error);
       throw error;
@@ -112,7 +112,7 @@ export class CheddaVault {
 
   async utilization(): Promise<BigNumber> {
     try {
-      return await this.contract?.utilization();
+      return await this.contract.utilization();
     } catch (error) {
       console.error("Error in utilization:", error);
       throw error;
@@ -121,7 +121,7 @@ export class CheddaVault {
 
   async totalAccountCollateralValue(account: string): Promise<BigNumber> {
     try {
-      return await this.contract?.totalAccountCollateralValue(account);
+      return await this.contract.totalAccountCollateralValue(account);
     } catch (error) {
       console.error("Error in totalAccountCollateralValue:", error);
       throw error;
@@ -130,7 +130,7 @@ export class CheddaVault {
 
   async depositApr(): Promise<BigNumber> {
     try {
-      return await this.contract?.depositApr();
+      return await this.contract.depositApr();
     } catch (error) {
       console.error("Error in depositApr:", error);
       throw error;
@@ -139,7 +139,7 @@ export class CheddaVault {
 
   async borrowApr(): Promise<BigNumber> {
     try {
-      return await this.contract?.borrowApr();
+      return await this.contract.borrowApr();
     } catch (error) {
       console.error("Error in borrowApr:", error);
       throw error;
@@ -148,7 +148,7 @@ export class CheddaVault {
 
   async rewardsApr(): Promise<BigNumber> {
     try {
-      return await this.contract?.rewardsApr();
+      return await this.contract.rewardsApr();
     } catch (error) {
       console.error("Error in rewardsApr:", error);
       throw error;
@@ -157,7 +157,7 @@ export class CheddaVault {
 
   async getVaultStats() {
     try {
-      return await this.contract?.getVaultStats();
+      return await this.contract.getVaultStats();
     } catch (error) {
       console.error("Error in getVaultStats:", error);
       throw error;
@@ -167,7 +167,7 @@ export class CheddaVault {
   // ERC20
   async approve(spender: string, amount: BigNumber) {
     try {
-      await this.contract?.connect(this.signer).approve(spender, amount);
+      await this.contract.connect(this.signer).approve(spender, amount);
     } catch (error) {
       console.error("Error in approve:", error);
       throw error;
@@ -176,7 +176,7 @@ export class CheddaVault {
 
   async allowance(account: string, spender: string): Promise<BigNumber> {
     try {
-      return await this.contract?.allowance(account, spender);
+      return await this.contract.allowance(account, spender);
     } catch (error) {
       console.error("Error in allowance:", error);
       throw error;
@@ -185,7 +185,7 @@ export class CheddaVault {
 
   async balanceOf(account: string): Promise<BigNumber> {
     try {
-      return await this.contract?.balanceOf(account);
+      return await this.contract.balanceOf(account);
     } catch (error) {
       console.error("Error in balanceOf:", error);
       throw error;
@@ -194,7 +194,7 @@ export class CheddaVault {
 
   async transfer(to: string, amount: BigNumber) {
     try {
-      await this.contract?.connect(this.signer).transfer(to, amount);
+      await this.contract.connect(this.signer).transfer(to, amount);
     } catch (error) {
       console.error("Error in transfer:", error);
       throw error;
@@ -203,7 +203,7 @@ export class CheddaVault {
 
   async totalSupply(): Promise<BigNumber> {
     try {
-      return await this.contract?.totalSupply();
+      return await this.contract.totalSupply();
     } catch (error) {
       console.error("Error in totalSupply:", error);
       throw error;
@@ -212,7 +212,7 @@ export class CheddaVault {
 
   async gauge(): Promise<string> {
     try {
-      return await this.contract?.gauge();
+      return await this.contract.gauge();
     } catch (error) {
       console.error("Error in gauge:", error);
       throw error;
@@ -221,21 +221,22 @@ export class CheddaVault {
 
   async accountPendingAmount(account: string): Promise<BigNumber> {
     try {
-      return await this.contract?.accountPendingAmount(account);
+      return await this.contract.accountPendingAmount(account);
     } catch (error) {
       console.error("Error in accountPendingAmount:", error);
       throw error;
     }
   }
 
-  contractAt(address: string) {
-    const vaultContract = new ethers.Contract(
-      address,
+  initiateContract() {
+    if (!this.address || !this.provider) {
+      throw new Error("Missing required data for contract initiation.");
+    }
+
+    this.contract = new ethers.Contract(
+      this.address,
       CheddaBaseTokenVault.abi,
       this.provider
     );
-
-    this.contract = vaultContract;
-    return vaultContract;
   }
 }
