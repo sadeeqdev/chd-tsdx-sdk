@@ -4,138 +4,238 @@ import CheddaBaseTokenVault from "./artifacts/CheddaBaseTokenVault.json";
 export class CheddaVault {
   private provider: ethers.providers.WebSocketProvider;
   private signer: Signer;
-  public contract: Contract;
+  public contract: Contract | null;
 
-  constructor(
-    provider: ethers.providers.WebSocketProvider,
-    address: string,
-    signer: Signer
-  ) {
+  constructor(provider: ethers.providers.WebSocketProvider, signer: Signer) {
     this.provider = provider;
     this.signer = signer;
-    this.contract = this.contractAt(address);
+    this.contract = null;
   }
 
   async depositAsset(amount: BigNumber, toAccount: string) {
-    return await this.contract.connect(this.signer).deposit(amount, toAccount);
+    try {
+      return await this.contract
+        ?.connect(this.signer)
+        .deposit(amount, toAccount);
+    } catch (error) {
+      console.error("Error in depositAsset:", error);
+      throw error;
+    }
   }
 
   async redeem(amount: BigNumber, toAccount: string) {
-    return await this.contract
-      .connect(this.signer)
-      .redeem(amount, toAccount, toAccount);
+    try {
+      return await this.contract
+        ?.connect(this.signer)
+        .redeem(amount, toAccount, toAccount);
+    } catch (error) {
+      console.error("Error in redeem:", error);
+      throw error;
+    }
   }
 
   async addCollateral(token: string, amount: BigNumber) {
-    return await this.contract
-      .connect(this.signer)
-      .addCollateral(token, amount);
+    try {
+      return await this.contract
+        ?.connect(this.signer)
+        .addCollateral(token, amount);
+    } catch (error) {
+      console.error("Error in addCollateral:", error);
+      throw error;
+    }
   }
 
   async removeCollateral(token: string, amount: BigNumber) {
-    return await this.contract
-      .connect(this.signer)
-      .removeCollateral(token, amount);
-  }
-
-  async addCollateral721(token: string, tokenIds: string[]) {
-    return await this.contract
-      .connect(this.signer)
-      .addCollateral721(token, tokenIds);
-  }
-
-  async removeCollateral721(token: string, tokenIds: string[]) {
-    return await this.contract
-      .connect(this.signer)
-      .removeCollateral721(token, tokenIds);
+    try {
+      return await this.contract
+        ?.connect(this.signer)
+        .removeCollateral(token, amount);
+    } catch (error) {
+      console.error("Error in removeCollateral:", error);
+      throw error;
+    }
   }
 
   async accountCollateralTokenIds(account: string, token: string) {
-    return await this.contract.accountCollateralTokenIds(account, token);
+    try {
+      return await this.contract?.accountCollateralTokenIds(account, token);
+    } catch (error) {
+      console.error("Error in accountCollateralTokenIds:", error);
+      throw error;
+    }
   }
 
   async borrow(amount: BigNumber) {
-    return await this.contract.connect(this.signer).take(amount);
+    try {
+      return await this.contract?.connect(this.signer).take(amount);
+    } catch (error) {
+      console.error("Error in borrow:", error);
+      throw error;
+    }
   }
 
   async repay(amount: BigNumber) {
-    return await this.contract.connect(this.signer).putAmount(amount);
+    try {
+      return await this.contract?.connect(this.signer).putAmount(amount);
+    } catch (error) {
+      console.error("Error in repay:", error);
+      throw error;
+    }
   }
 
   async collateral(account: string, token: string): Promise<any> {
-    return await this.contract.accountCollateral(account, token);
+    try {
+      return await this.contract?.accountCollateral(account, token);
+    } catch (error) {
+      console.error("Error in collateral:", error);
+      throw error;
+    }
   }
 
   async totalAssets(): Promise<BigNumber> {
-    return await this.contract.totalAssets();
+    try {
+      return await this.contract?.totalAssets();
+    } catch (error) {
+      console.error("Error in totalAssets:", error);
+      throw error;
+    }
   }
 
   async collateralAmounts() {
-    return await this.contract.collateralAmounts();
+    try {
+      return await this.contract?.collateralAmounts();
+    } catch (error) {
+      console.error("Error in collateralAmounts:", error);
+      throw error;
+    }
   }
 
   async utilization(): Promise<BigNumber> {
-    return await this.contract.utilization();
+    try {
+      return await this.contract?.utilization();
+    } catch (error) {
+      console.error("Error in utilization:", error);
+      throw error;
+    }
   }
 
   async totalAccountCollateralValue(account: string): Promise<BigNumber> {
-    return await this.contract.totalAccountCollateralValue(account);
+    try {
+      return await this.contract?.totalAccountCollateralValue(account);
+    } catch (error) {
+      console.error("Error in totalAccountCollateralValue:", error);
+      throw error;
+    }
   }
 
   async depositApr(): Promise<BigNumber> {
-    return await this.contract.depositApr();
+    try {
+      return await this.contract?.depositApr();
+    } catch (error) {
+      console.error("Error in depositApr:", error);
+      throw error;
+    }
   }
 
   async borrowApr(): Promise<BigNumber> {
-    return await this.contract.borrowApr();
+    try {
+      return await this.contract?.borrowApr();
+    } catch (error) {
+      console.error("Error in borrowApr:", error);
+      throw error;
+    }
   }
 
   async rewardsApr(): Promise<BigNumber> {
-    return await this.contract.rewardsApr();
+    try {
+      return await this.contract?.rewardsApr();
+    } catch (error) {
+      console.error("Error in rewardsApr:", error);
+      throw error;
+    }
   }
 
   async getVaultStats() {
-    return await this.contract.getVaultStats();
+    try {
+      return await this.contract?.getVaultStats();
+    } catch (error) {
+      console.error("Error in getVaultStats:", error);
+      throw error;
+    }
   }
 
   // ERC20
   async approve(spender: string, amount: BigNumber) {
-    await this.contract.connect(this.signer).approve(spender, amount);
+    try {
+      await this.contract?.connect(this.signer).approve(spender, amount);
+    } catch (error) {
+      console.error("Error in approve:", error);
+      throw error;
+    }
   }
 
   async allowance(account: string, spender: string): Promise<BigNumber> {
-    return await this.contract.allowance(account, spender);
+    try {
+      return await this.contract?.allowance(account, spender);
+    } catch (error) {
+      console.error("Error in allowance:", error);
+      throw error;
+    }
   }
 
   async balanceOf(account: string): Promise<BigNumber> {
-    return await this.contract.balanceOf(account);
+    try {
+      return await this.contract?.balanceOf(account);
+    } catch (error) {
+      console.error("Error in balanceOf:", error);
+      throw error;
+    }
   }
 
   async transfer(to: string, amount: BigNumber) {
-    await this.contract.connect(this.signer).transfer(to, amount);
+    try {
+      await this.contract?.connect(this.signer).transfer(to, amount);
+    } catch (error) {
+      console.error("Error in transfer:", error);
+      throw error;
+    }
   }
 
   async totalSupply(): Promise<BigNumber> {
-    return await this.contract.totalSupply();
+    try {
+      return await this.contract?.totalSupply();
+    } catch (error) {
+      console.error("Error in totalSupply:", error);
+      throw error;
+    }
   }
 
   async gauge(): Promise<string> {
-    return await this.contract.gauge();
+    try {
+      return await this.contract?.gauge();
+    } catch (error) {
+      console.error("Error in gauge:", error);
+      throw error;
+    }
   }
 
   async accountPendingAmount(account: string): Promise<BigNumber> {
-    return await this.contract.accountPendingAmount(account);
-  }
-
-  async getVaultContract(address: string) {
-    return await this.contractAt(address);
+    try {
+      return await this.contract?.accountPendingAmount(account);
+    } catch (error) {
+      console.error("Error in accountPendingAmount:", error);
+      throw error;
+    }
   }
 
   contractAt(address: string) {
-    return new ethers.Contract(
+    const vaultContract = new ethers.Contract(
       address,
       CheddaBaseTokenVault.abi,
       this.provider
     );
+
+    this.contract = vaultContract;
+    return vaultContract;
   }
 }

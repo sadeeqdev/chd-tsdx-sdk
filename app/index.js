@@ -6,6 +6,8 @@ import { MockSigner } from "./mockSigner.js";
 const provider = environment.webSocketUrl;
 const signer = new MockSigner(address);
 const chedda = new Chedda(provider);
-const vault = chedda.vault(contractAddress, signer);
+const vault = chedda.vault(signer);
+const token = chedda.vault(signer);
+const tokenContract = token.contractAt(contractAddress);
 
-console.log(vault.contract);
+console.log(tokenContract);

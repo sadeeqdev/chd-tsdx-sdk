@@ -5,69 +5,106 @@ import MarketNFT from "./artifacts/MarketNFT.json";
 export class TokenService {
   private provider: ethers.providers.WebSocketProvider;
   private signer: Signer;
-  public contract: Contract;
+  public contract: Contract | null;
 
-  constructor(
-    provider: ethers.providers.WebSocketProvider,
-    address: string,
-    signer: Signer
-  ) {
+  constructor(provider: ethers.providers.WebSocketProvider, signer: Signer) {
     this.provider = provider;
     this.signer = signer;
-    this.contract = this.contractAt(address, false);
+    this.contract = null;
   }
 
   async name(): Promise<string> {
-    return await this.contract.name();
+    try {
+      return await this.contract?.name();
+    } catch (error) {
+      console.error("Error in name:", error);
+      throw error;
+    }
   }
 
   async symbol(): Promise<string> {
-    return await this.contract.symbol();
+    try {
+      return await this.contract?.symbol();
+    } catch (error) {
+      console.error("Error in symbol:", error);
+      throw error;
+    }
   }
 
   async approve(spender: string, amount: BigNumber) {
-    if (this.contract.isNFT) {
-      await this.contract
-        .connect(this.signer)
-        .setApprovalForAll(spender, amount);
-    } else {
-      await this.contract.connect(this.signer).approve(spender, amount);
+    try {
+      if (this.contract?.isNFT) {
+        await this.contract
+          .connect(this.signer)
+          .setApprovalForAll(spender, amount);
+      } else {
+        await this.contract?.connect(this.signer).approve(spender, amount);
+      }
+    } catch (error) {
+      console.error("Error in approve:", error);
+      throw error;
     }
   }
 
   async allowance(account: string, spender: string): Promise<BigNumber> {
-    if (this.contract.isNFT) {
-      return await this.contract.isApprovedForAll(account, spender);
-    } else {
-      return await this.contract.allowance(account, spender);
+    try {
+      if (this.contract?.isNFT) {
+        return await this.contract.isApprovedForAll(account, spender);
+      } else {
+        return await this.contract?.allowance(account, spender);
+      }
+    } catch (error) {
+      console.error("Error in allowance:", error);
+      throw error;
     }
   }
 
   async balanceOf(account: string): Promise<BigNumber> {
-    return await this.contract.balanceOf(account);
+    try {
+      return await this.contract?.balanceOf(account);
+    } catch (error) {
+      console.error("Error in balanceOf:", error);
+      throw error;
+    }
   }
 
   async ownedTokens(account: string): Promise<string[]> {
-    return (await this.contract.ownedTokens(account)).map((t: any) =>
-      t.toString()
-    );
+    try {
+      return (await this.contract?.ownedTokens(account)).map((t: any) =>
+        t.toString()
+      );
+    } catch (error) {
+      console.error("Error in ownedTokens:", error);
+      throw error;
+    }
   }
 
   async transfer(to: string, amount: BigNumber) {
-    await this.contract.connect(this.signer).transfer(to, amount);
+    try {
+      await this.contract?.connect(this.signer).transfer(to, amount);
+    } catch (error) {
+      console.error("Error in transfer:", error);
+      throw error;
+    }
   }
 
   async totalSupply(): Promise<BigNumber> {
-    return await this.contract.totalSupply();
+    try {
+      return await this.contract?.totalSupply();
+    } catch (error) {
+      console.error("Error in totalSupply:", error);
+      throw error;
+    }
   }
 
-  contractAt(address: string, isNFT: boolean): Contract {
+  contractAt(address: string, isNFT: boolean = false) {
     let abi: ethers.ContractInterface;
     if (isNFT) {
       abi = MarketNFT.abi;
     } else {
       abi = ERC20.abi;
     }
-    return new ethers.Contract(address, abi, this.provider);
+    const tokenContract = new ethers.Contract(address, abi, this.provider);
+    this.contract = tokenContract;
   }
 }
