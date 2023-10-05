@@ -20,6 +20,12 @@
     "tsdx": "^0.14.1"
   },
   "dependencies": {
-    "ethers": "^5.4.7"
+    "@types/chai": "^4.3.6",
+    "@types/mocha": "^10.0.2",
+    "@types/sinon": "^10.0.18",
+    "chai": "^4.3.10",
+    "ethers": "^5.4.7",
+    "mocha": "^10.2.0",
+    "sinon": "^16.0.0"
   }
 }

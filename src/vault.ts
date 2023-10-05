@@ -7,7 +7,7 @@ export class CheddaVault {
   constructor(
     private provider: ethers.providers.WebSocketProvider,
     private address: string,
-    private signer: Signer
+    public signer: Signer
   ) {
     this.initiateContract();
   }
