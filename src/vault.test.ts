@@ -1,6 +1,5 @@
 import { ethers, Signer } from "ethers";
-import { address, environment, private_key } from "./mocks";
-import { mockedDepositReturnValue } from "./mocks/vaultmocks";
+import { address, environment } from "./mocks";
 import { CheddaVault } from "./vault";
 
 // Mock the depositAsset method
@@ -29,7 +28,7 @@ describe("Chedda vault", () => {
     jest.setTimeout(10000);
 
     provider = new ethers.providers.WebSocketProvider(environment.webSocketUrl);
-    signer = new ethers.Wallet(private_key, provider);
+    signer = ethers.Wallet.createRandom();
     cheddaVault = new CheddaVault(provider, address, signer);
   });
 
@@ -42,13 +41,9 @@ describe("Chedda vault", () => {
     const amount = ethers.utils.parseUnits("1");
     const toAccount = "0x0000000000000000000000000000000000000003";
 
-    // Mock the behavior of the 'depositAsset' method
-
-    mockAddCollateral.mockReturnValue(mockedDepositReturnValue);
-    cheddaVault.addCollateral(toAccount, amount);
-
-    // You can also assert how many tid87kxy6tbrvdecstv5x6fbes the mock was called
-    expect(mockAddCollateral).toHaveBeenCalledTimes(1);
+    cheddaVault.depositAsset(amount, toAccount);
+    expect(mockDeposit).toHaveBeenCalledTimes(1);
+    expect(mockDeposit).toHaveBeenCalledWith(amount, toAccount);
   });
 
   it("should approve transactions", async () => {
@@ -57,5 +52,6 @@ describe("Chedda vault", () => {
 
     await cheddaVault.approve(spender, amount);
     expect(mockApprove).toHaveBeenCalledTimes(1);
+    expect(mockApprove).toHaveBeenCalledWith(spender, amount);
   });
 });

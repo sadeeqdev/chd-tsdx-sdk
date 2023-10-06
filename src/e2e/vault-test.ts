@@ -1,6 +1,7 @@
 import { ethers, Contract, Signer } from "ethers";
 import { CheddaVault } from "../vault";
-import { address, environment, private_key } from "../mocks";
+import { address, environment } from "../mocks";
+import { randomBytes } from "ethers/lib/utils";
 
 describe("CheddaVault", () => {
   let cheddaVault: CheddaVault;
@@ -13,7 +14,7 @@ describe("CheddaVault", () => {
     mockProvider = new ethers.providers.WebSocketProvider(
       environment.webSocketUrl
     );
-    mockSigner = new ethers.Wallet(private_key, mockProvider);
+    mockSigner = new ethers.Wallet(randomBytes(32), mockProvider);
     cheddaVault = new CheddaVault(mockProvider, address, mockSigner);
   });
 

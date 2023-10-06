@@ -179,28 +179,3 @@ export const environment = {
     },
   },
 };
-
-export class MockSigner {
-  constructor(private address: any) {}
-
-  getAddress() {
-    return Promise.resolve(this.address);
-  }
-
-  signMessage(message: any) {
-    // Simulate message signing
-    const signature = `0x${Buffer.from(message).toString("hex")}`;
-    return Promise.resolve(signature);
-  }
-
-  sendTransaction(transaction: any) {
-    // Simulate transaction signing and sending
-    const transactionHash = `0x${Buffer.from(
-      JSON.stringify(transaction)
-    ).toString("hex")}`;
-    return Promise.resolve(transactionHash);
-  }
-}
-
-export const private_key =
-  "5c175f36f6cf2e2c3688223b3484e02eb2d64b78e08eb44d9a915fce9a5cf190";
